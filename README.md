@@ -1,2 +1,0 @@
-# proyecto-personal-oficial
-oficiñal
