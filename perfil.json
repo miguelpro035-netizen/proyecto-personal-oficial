@@ -1,0 +1,8 @@
+{
+  "nombre": "Miguel Angel Chipana Choque",
+  "apodo": "//Panteras//",
+  "carrera": "Ingeniería en Sistemas",
+  "universidad": "UPDS",
+  "deportePrincipal": "Fútbol",
+  "proyectoDetalle": "<h4>Portafolio PWA offline-first</h4><p>Catálogo personal de <b>Miguel Angel //Panteras//</b> con caché, modo offline y formulario con cola local.</p><ul><li>BEM + <code>aspect-ratio</code> para CLS ≤ 0.1</li><li>DOMPurify para HTML dinámico</li><li>Service Worker: caché primero / red primero</li></ul>"
+}

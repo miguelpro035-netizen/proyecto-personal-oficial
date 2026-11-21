@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a1020">
+  <meta name="description" content="Práctica de Event Bubbling, hidratación y diagnóstico HTML/DOM.">
+  <title>Diagnóstico DOM | Miguel Angel</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="diagnostico.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+    <script src="app.js" defer></script>
+
+<script>
+// Registro del Service Worker PWA (requiere localhost o HTTPS).
+if ("serviceWorker" in navigator) {
+ window.addEventListener("load", function () {
+  navigator.serviceWorker.register("./sw.js")
+   .then(function(reg){ console.log("Service Worker PWA registrado:",reg.scope); })
+   .catch(function(err){ console.error("Error al registrar el Service Worker:",err); });
+ });
+}
+</script>
+</head>
+<body>
+  <main id="diagnosticoApp" class="contenedor">
+    <header class="cabecera">
+      <div>
+        <p class="sobrelinea">DISEÑO WEB II · UPDS</p>
+        <h1>Event Bubbling, Diagnóstico &amp; Offline-First</h1>
+        <p>Práctica de propagación de eventos, hidratación, caché local y funcionamiento sin conexión.</p>
+      </div>
+      <a class="volver" href="index.html">← Volver al portafolio</a>
+    </header>
+
+    <section class="panel">
+      <h2>1. Hidratación de la interfaz</h2>
+      <p>La interfaz comienza en estado estático. Al hidratarla, JavaScript habilita sus interacciones.</p>
+      <div class="fila">
+        <button id="btnDemoHidratar" class="primario" data-hidratado="false">💧 Hidratar interfaz</button>
+        <span id="estadoDemo" class="estado estado-estatico">Estado: ESTÁTICO</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>2. Demostración de Event Bubbling</h2>
+      <p>El contenedor padre tiene un único listener delegado. Los botones agregados dinámicamente también son detectados sin registrar listeners individuales.</p>
+      <div class="fila">
+        <button id="btnAgregarDemo" class="secundario" disabled>+ Agregar elemento dinámico</button>
+      </div>
+      <div id="listaDemo" class="lista-demo">
+        <button class="tarjeta-demo" type="button">Elemento inicial A</button>
+        <button class="tarjeta-demo" type="button">Elemento inicial B</button>
+      </div>
+      <div id="salidaBubbling" class="salida" aria-live="polite">Aquí aparecerá el resultado del evento delegado.</div>
+    </section>
+
+    <section class="panel">
+      <h2>3. Herramienta de diagnóstico HTML/DOM</h2>
+      <p>Pega un fragmento HTML para comprobar la presencia de viewport, IDs duplicados y algunas clases genéricas que pueden generar conflictos.</p>
+      <label for="codigoEntrada">Código HTML para analizar</label>
+      <textarea id="codigoEntrada" rows="9" spellcheck="false" placeholder="Pega aquí tu código HTML..."></textarea>
+      <button id="btnAnalizar" class="primario">Analizar código</button>
+      <div id="resultadoAnalisis" class="resultado" aria-live="polite">
+        <p class="resultado-aviso">El resultado del análisis aparecerá aquí.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>4. Core Web Vitals en vivo</h2>
+      <p>Mediciones reales de esta página con <code>PerformanceObserver</code>. Metas: LCP ≤ 2.5 s y CLS ≤ 0.1.</p>
+      <div class="vitales">
+        <div class="vital" id="vitalLcp"><span class="vital__nombre">LCP</span><strong class="vital__valor">…</strong><small class="vital__meta">Meta ≤ 2.5 s</small></div>
+        <div class="vital" id="vitalCls"><span class="vital__nombre">CLS</span><strong class="vital__valor">…</strong><small class="vital__meta">Meta ≤ 0.1</small></div>
+        <div class="vital" id="vitalSw"><span class="vital__nombre">Service Worker</span><strong class="vital__valor">…</strong><small class="vital__meta">Proxy offline</small></div>
+        <div class="vital" id="vitalRed"><span class="vital__nombre">Red</span><strong class="vital__valor">…</strong><small class="vital__meta">Online / Offline</small></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>5. Checklist de preparación · sábado 21 de noviembre</h2>
+      <p>Verificación obligatoria antes de la sesión especial (puntos extra y sorteo). Tu avance se guarda en este dispositivo.</p>
+      <ol id="checklistSabado" class="checklist">
+        <li><label class="checklist__item"><input type="checkbox" data-check="offline"> <span><b>Prueba Offline real:</b> activa <i>Offline</i> en DevTools → Network y recarga el Catálogo Personal y la Empresa ODS; ambos deben cargar sin errores gracias a <code>sw.js</code>.</span></label></li>
+        <li><label class="checklist__item"><input type="checkbox" data-check="cls-bem"> <span><b>Auditoría de CLS y BEM:</b> ninguna imagen debe saltar al hacer scroll y las hojas de estilo usan clases BEM limpias, sin <code>!important</code>.</span></label></li>
+        <li><label class="checklist__item"><input type="checkbox" data-check="beneficios"> <span><b>Habilitación de beneficios:</b> presenta ambos módulos completos y mantén activas tus <b>2 balas</b> para las ruletas del sábado.</span></label></li>
+      </ol>
+      <div id="checklistEstado" class="salida" aria-live="polite">0 de 3 verificaciones completadas.</div>
+      <div class="fila"><button id="btnAuditarPagina" class="secundario" type="button">Auditar esta página (CLS / BEM / SW)</button></div>
+      <div id="auditoriaPagina" class="resultado" aria-live="polite"><p class="resultado-aviso">Pulsa el botón para auditar la página abierta.</p></div>
+    </section>
+
+    <footer>Diseño Web II · Arquitectura Frontend Avanzada · Miguel Angel</footer>
+  </main>
+</body>
+</html>
